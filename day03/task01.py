@@ -8,6 +8,7 @@ class SpiralMemory:
     edge_size: int
     edge_center_index: int
 
+    # Map to quickly retrieve coordinates by index
     coordinates_by_index = {}
 
     @staticmethod
@@ -70,22 +71,23 @@ class SpiralMemory:
 
             items_in_edge_filled += 1
 
-            # Edge is filled => switch directions
             if items_in_edge_filled >= edge_length:
+                # Edge is filled => switch directions
                 number_of_edges_filled += 1
 
                 # Switch directions after filling an edge.
                 # If we're in the special case of filling the 4th edge, we want to go one more step in the same
-                # direction, and THEN change direction (and increase the edge size)
+                # direction, and THEN change direction.
                 if number_of_edges_filled < 4 or number_of_edges_filled == 5:
                     current_direction = (current_direction + 1) % 4
                     items_in_edge_filled = 1
 
                     if number_of_edges_filled == 5:
+                        # We've filled the 4th edge and the extra step, so we increase the edge size
                         number_of_edges_filled = 0
                         edge_length = self.calculate_edge_size(i)
                         # Pretend we already filled 2 (the one we just filled, + the one 'below'
-                        # which will be filled on the 4th row
+                        # which will be filled gon the 4th edge
                         items_in_edge_filled = 2
 
             fill_cursor = moves[directions[current_direction]](fill_cursor)
