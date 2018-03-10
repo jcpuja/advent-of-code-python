@@ -74,9 +74,9 @@ class SpiralMemory:
             if items_in_edge_filled >= edge_length:
                 number_of_edges_filled += 1
 
-                # Switch directions if we have filled 0-3 edges.
-                # If we're in the special case of filling the 4th edge, we want to go one more in the same direction,
-                # and THEN change direction (while increasing the edge size)
+                # Switch directions after filling an edge.
+                # If we're in the special case of filling the 4th edge, we want to go one more step in the same
+                # direction, and THEN change direction (and increase the edge size)
                 if number_of_edges_filled < 4 or number_of_edges_filled == 5:
                     current_direction = (current_direction + 1) % 4
                     items_in_edge_filled = 1
