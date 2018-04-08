@@ -20,7 +20,7 @@ nodes: Dict[str, Node] = {}
 all_keys = set()
 children_keys = set()
 
-with open('example_input.txt') as file:
+with open('input.txt') as file:
     for line in file:
         key, weight, children = parse_input_line(line.rstrip())
         nodes[key] = Node(key, weight, children)
@@ -35,5 +35,8 @@ root_node: Node = nodes[(all_keys - children_keys).pop()]
 
 root_node.compute_tree_weight()
 
-print(root_node.find_unbalanced_node().key)
+unbalanced_node, weight_delta = root_node.find_unbalanced_node()
 
+print(unbalanced_node.key)
+print(unbalanced_node.node_weight, weight_delta)
+print(unbalanced_node.node_weight + weight_delta)

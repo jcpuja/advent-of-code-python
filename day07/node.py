@@ -24,7 +24,7 @@ class Node:
         self.tree_weight = tree_weight
         return tree_weight
 
-    def find_unbalanced_node(self):
+    def find_unbalanced_node(self, expected_weight=0):
         weight_frequencies: Dict[int, int] = {}
         for child in self.children:
             if child.tree_weight in weight_frequencies:
@@ -34,15 +34,16 @@ class Node:
 
         distinct_weights = len(weight_frequencies)
         if distinct_weights == 0 or distinct_weights == 1:
-            return self
+            child_weights = 0
+            for child in self.children:
+                child_weights += child.tree_weight
 
-        weight_freq_tuples = list(weight_frequencies.items())
-        wrong_weight_tuple = sorted(weight_freq_tuples, key=lambda tup: tup[1])[0]
-        wrong_weight = wrong_weight_tuple[0]
+            return self, expected_weight - child_weights - self.node_weight
+
+        sorted_weight_frequencies = sorted(list(weight_frequencies.items()), key=lambda tup: tup[1])
+        wrong_weight = sorted_weight_frequencies[0][0]
+        right_weight = sorted_weight_frequencies[1][0]
 
         wrong_node = [node for node in self.children if node.tree_weight == wrong_weight][0]
 
-        return wrong_node
-
-
-
+        return wrong_node.find_unbalanced_node(right_weight)
