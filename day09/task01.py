@@ -39,21 +39,27 @@ class GroupVisitor(NodeVisitor):
     def generic_visit(self, node, visited_children):
         pass
 
-    def visit_group(self, node, group):
+    def visit_non_empty_group(self, node, group):
         left_bracket, group_contents, right_bracket = group
 
         group_node = GroupNode(node, group_contents)
-
         return group_node
 
-    def visit_optional_single_group_or_garbage(self, node, optional_single_group_or_garbage):
-        if len(optional_single_group_or_garbage) == 0 or optional_single_group_or_garbage[0] == 'garbage':
-            return None
+    def visit_empty_group(self, node, group):
+        group_node = GroupNode(node, [])
+        return group_node
 
-        return optional_single_group_or_garbage[0]
+    def visit_commaed(self, node, commaed):
+        return list(filter(lambda x: x != 'garbage', commaed))
 
-    def visit_comma_separated_groups_or_garbages(self, node, comma_separated_groups_or_garbages):
-        return list(filter(lambda x: x != 'garbage', comma_separated_groups_or_garbages))
+    def visit_group_or_garbage_sequence(self, node, group_or_garbage_sequence):
+
+        group_or_garbage, commaed = group_or_garbage_sequence
+
+        flat_children = [group_or_garbage]
+        flat_children.extend(commaed)
+
+        return list(filter(lambda x: x != 'garbage', flat_children))
 
     def visit_comma_group_or_garbage(self, node, comma_group_or_garbage):
         comma, group_or_garbage = comma_group_or_garbage
@@ -62,14 +68,17 @@ class GroupVisitor(NodeVisitor):
     def visit_garbage(self, node, garbage):
         return 'garbage'
 
-    visit_group_or_garbage = visit_group_or_garbage_sequence = NodeVisitor.lift_child
+    visit_group = visit_group_or_garbage = NodeVisitor.lift_child
 
 
 grammar = """
-group = "{" group_or_garbage_sequence "}"
-group_or_garbage_sequence = optional_single_group_or_garbage / comma_separated_groups_or_garbages
-optional_single_group_or_garbage = group_or_garbage?
-comma_separated_groups_or_garbages = group_or_garbage comma_group_or_garbage+
+group = empty_group / non_empty_group
+empty_group = group_open group_close
+non_empty_group = group_open group_or_garbage_sequence group_close
+group_open = "{"
+group_close = "}"
+group_or_garbage_sequence = group_or_garbage commaed
+commaed = comma_group_or_garbage*
 comma_group_or_garbage = "," group_or_garbage
 group_or_garbage = group / garbage
 garbage = "<" text ">"
@@ -79,14 +88,14 @@ escaped_character = ~"!."
 """
 
 
-text = "{{},{}}"
+text = "{{},{},{<abc>},<>}"
 
 visitor = GroupVisitor(grammar, text)
 
 group_tree = visitor.top_group_node
 
-group_tree.init_weight(1)
-
 print(group_tree)
 
-print(group_tree.sum_weight())
+# group_tree.init_weight(1)
+#
+# print(group_tree.sum_weight())
