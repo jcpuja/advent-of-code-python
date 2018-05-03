@@ -5,24 +5,17 @@ from parsimonious.grammar import Grammar
 class GroupNode:
     def __init__(self, parsed_node, children):
         self.parsedNode = parsed_node
-        self.weight = 0
         self.children = children
 
-    def init_weight(self, weight):
-        self.weight = weight
+    def sum_weight(self, start_weight):
+        weight_sum = start_weight
         for child in self.children:
-            child.init_weight(weight + 1)
-
-    def sum_weight(self):
-        weight_sum = self.weight
-        for child in self.children:
-            weight_sum += child.sum_weight()
+            weight_sum += child.sum_weight(start_weight + 1)
 
         return weight_sum
 
     def __str__(self):
         return "{parsed_node=" + self.parsedNode.expr_name \
-               + ", weight=" + str(self.weight) \
                + ", children=" + ', '.join(str(child) for child in self.children) \
                + "}"
 
@@ -33,7 +26,7 @@ class GroupVisitor(NodeVisitor):
 
     def __init__(self, _grammar, _text):
         ast = Grammar(_grammar).parse(_text)
-        print(ast)
+        # print(ast)
         self.top_group_node = self.visit(ast)
 
     def generic_visit(self, node, visited_children):
@@ -88,14 +81,15 @@ escaped_character = ~"!."
 """
 
 
-text = "{{},{},{<abc>},<>}"
+# text = "{{},{},{<abc>},<>}"
+
+with open('input.txt') as f:
+    text = f.readline().rstrip()
 
 visitor = GroupVisitor(grammar, text)
 
 group_tree = visitor.top_group_node
 
-print(group_tree)
+# print(group_tree)
 
-# group_tree.init_weight(1)
-#
-# print(group_tree.sum_weight())
+print(group_tree.sum_weight(1))
