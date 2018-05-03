@@ -43,7 +43,7 @@ class GroupVisitor(NodeVisitor):
         return group_node
 
     def visit_commaed(self, node, commaed):
-        return list(filter(lambda x: x != 'garbage', commaed))
+        return self.filter_garbage(commaed)
 
     def visit_group_or_garbage_sequence(self, node, group_or_garbage_sequence):
 
@@ -52,7 +52,7 @@ class GroupVisitor(NodeVisitor):
         flat_children = [group_or_garbage]
         flat_children.extend(commaed)
 
-        return list(filter(lambda x: x != 'garbage', flat_children))
+        return self.filter_garbage(flat_children)
 
     def visit_comma_group_or_garbage(self, node, comma_group_or_garbage):
         comma, group_or_garbage = comma_group_or_garbage
@@ -60,6 +60,9 @@ class GroupVisitor(NodeVisitor):
 
     def visit_garbage(self, node, garbage):
         return 'garbage'
+
+    def filter_garbage(self, group_or_garbage_list):
+        return list(filter(lambda x: x != 'garbage', group_or_garbage_list))
 
     visit_group = visit_group_or_garbage = NodeVisitor.lift_child
 
