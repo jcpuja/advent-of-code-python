@@ -55,3 +55,15 @@ class TestCircularList(unittest.TestCase):
     def testReverse_whenLengthLT1_shouldRaise(self):
         sut = CircularList(5)
         self.assertRaises(Exception, sut.reverse, 0, 0)
+
+    def testGetActualPosition_whenPositionLTListLength_shouldReturnGivenPosition(self):
+        sut = CircularList(5)
+        self.assertEqual(4, sut.get_actual_position(position=4))
+
+    def testGetActualPosition_whenPositionGTEListLength_shouldReturnGivenPositionModuloListLength(self):
+        sut = CircularList(5)
+        self.assertEqual(0, sut.get_actual_position(position=5))
+
+    def testGetActualPosition_whenPositionLT0_shouldRaise(self):
+        sut = CircularList(5)
+        self.assertRaises(Exception, sut.get_actual_position, -1)

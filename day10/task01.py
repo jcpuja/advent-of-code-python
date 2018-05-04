@@ -24,7 +24,7 @@ class CircularList:
             self.list[position:end_index] = slice_to_reverse
 
         else:
-            actual_end_index = int(end_index % list_length)
+            actual_end_index = end_index % list_length
 
             right_slice = self.list[position:]
             left_slice = self.list[:actual_end_index]
@@ -35,6 +35,11 @@ class CircularList:
             self.list[position:] = slice_to_reverse[:len(right_slice)]
             self.list[:actual_end_index] = slice_to_reverse[len(left_slice):]
 
+    def get_actual_position(self, position):
+        if position < 0:
+            raise Exception('The given position to compute must be positive: position=' + str(position))
+
+        return position % len(self.list)
 
 
 class KnotHash:
