@@ -33,7 +33,8 @@ class CircularList:
             slice_to_reverse.reverse()
 
             self.list[position:] = slice_to_reverse[:len(right_slice)]
-            self.list[:actual_end_index] = slice_to_reverse[len(left_slice):]
+            self.list[:actual_end_index] = slice_to_reverse[-1 * len(left_slice):]
+            # times -1 means "len(left_slice) chars from the right of slice_to_reverse"
 
     def get_actual_position(self, position):
         if position < 0:
@@ -46,14 +47,18 @@ class KnotHash:
     def __init__(self, lengths, list_size=256):
         self.current_position = 0
         self.skip_size = 0
-        self.lengths = lengths
-        self.circular_list = CircularList(list_size)
+        self.list = CircularList(list_size)
+
+        for length in lengths:
+            self.list.reverse(self.current_position, length)
+            self.current_position = self.list.get_actual_position(self.current_position + length + self.skip_size)
+            self.skip_size += 1
 
     def get_current_position(self):
         return self.current_position
 
     def get_list(self):
-        return self.circular_list.get_list()
+        return self.list.get_list()
 
     def get_skip_size(self):
         return self.skip_size

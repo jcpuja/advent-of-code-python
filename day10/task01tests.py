@@ -5,7 +5,6 @@ from day10.task01 import KnotHash, CircularList
 
 class TestKnotHash(unittest.TestCase):
 
-    @unittest.skip("Acceptance test, will not pass until implementation is complete")
     def testExampleScenario(self):
         sut = KnotHash([3, 4, 1, 5], list_size=5)
         self.assertEqual(4, sut.get_skip_size())
@@ -34,6 +33,11 @@ class TestCircularList(unittest.TestCase):
         sut = CircularList(5)
         sut.reverse(4, 2)
         self.assertEqual([4, 1, 2, 3, 0], sut.get_list())
+
+    def testReverse_whenLengthEqualsListLengthAndPositionGT0_shouldReverseWithWrap(self):
+        sut = CircularList(5)
+        sut.reverse(1, 5)
+        self.assertEqual([1, 0, 4, 3, 2], sut.get_list())
 
     def testReverse_whenLengthEquals1_shouldNotChangeList(self):
         sut = CircularList(5)
