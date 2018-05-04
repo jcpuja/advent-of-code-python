@@ -1,6 +1,7 @@
 import unittest
 
-from day10.task01 import KnotHash, CircularList
+from day10.circular_list import CircularList
+from day10.knot_hash import KnotHash
 
 
 class TestKnotHash(unittest.TestCase):
@@ -44,6 +45,11 @@ class TestCircularList(unittest.TestCase):
         sut.reverse(position=0, length=1)
         self.assertEqual([0, 1, 2, 3, 4], sut.get_list())
 
+    def testReverse_whenLengthEquals0_shouldNotChangeList(self):
+        sut = CircularList(5)
+        sut.reverse(position=0, length=0)
+        self.assertEqual([0, 1, 2, 3, 4], sut.get_list())
+
     def testReverse_whenPositionGTEListLength_shouldRaise(self):
         sut = CircularList(5)
         self.assertRaises(Exception, sut.reverse, 5, 1)
@@ -56,9 +62,9 @@ class TestCircularList(unittest.TestCase):
         sut = CircularList(5)
         self.assertRaises(Exception, sut.reverse, 0, 6)
 
-    def testReverse_whenLengthLT1_shouldRaise(self):
+    def testReverse_whenLengthLT0_shouldRaise(self):
         sut = CircularList(5)
-        self.assertRaises(Exception, sut.reverse, 0, 0)
+        self.assertRaises(Exception, sut.reverse, 0, -1)
 
     def testGetActualPosition_whenPositionLTListLength_shouldReturnGivenPosition(self):
         sut = CircularList(5)
