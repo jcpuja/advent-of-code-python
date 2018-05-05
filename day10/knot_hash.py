@@ -1,5 +1,6 @@
 from day10.ascii_converter import AsciiConverter
 from day10.dense_hash_processor import DenseHashProcessor
+from day10.hash_formatter import HashFormatter
 from day10.knot_hash_round import KnotHashRound
 
 
@@ -19,8 +20,7 @@ class KnotHash:
 
         sparse_hash = last_round.get_list()
         dense_hash = DenseHashProcessor(sparse_hash).get_hash()
-
-        print(dense_hash)
+        self.string_hash = HashFormatter.format(dense_hash)
 
     def get_hash(self):
-        pass
+        return self.string_hash
