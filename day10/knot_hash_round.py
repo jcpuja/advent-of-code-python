@@ -1,7 +1,7 @@
 from day10.circular_list import CircularList
 
 
-class KnotHash:
+class KnotHashRound:
     def __init__(self, lengths, list_size=256):
         self.current_position = 0
         self.skip_size = 0
