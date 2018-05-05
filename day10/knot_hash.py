@@ -1,4 +1,5 @@
 from day10.ascii_converter import AsciiConverter
+from day10.dense_hash_processor import DenseHashProcessor
 from day10.knot_hash_round import KnotHashRound
 
 
@@ -17,7 +18,9 @@ class KnotHash:
             initial_skip_size = last_round.get_skip_size()
 
         sparse_hash = last_round.get_list()
-        print(sparse_hash)
+        dense_hash = DenseHashProcessor(sparse_hash).get_hash()
+
+        print(dense_hash)
 
     def get_hash(self):
         pass
