@@ -10,15 +10,19 @@ class KnotHash:
 
         lengths = AsciiConverter.to_ascii_codes(message)
 
-        last_round = None
+        current_round = None
         initial_position = 0
         initial_skip_size = 0
         for i in range(64):
-            last_round = KnotHashRound(lengths, initial_position=initial_position, initial_skip_size=initial_skip_size)
-            initial_position = last_round.get_current_position()
-            initial_skip_size = last_round.get_skip_size()
+            print('iteration=' + str(i))
+            print('lengths=' + str(lengths))
+            print('initial_position=' + str(initial_position))
+            print('initial_skip_size=' + str(initial_skip_size))
+            current_round = KnotHashRound(lengths, initial_position=initial_position, initial_skip_size=initial_skip_size)
+            initial_position = current_round.get_current_position()
+            initial_skip_size = current_round.get_skip_size()
 
-        sparse_hash = last_round.get_list()
+        sparse_hash = current_round.get_list()
         dense_hash = DenseHashProcessor(sparse_hash).get_hash()
         self.string_hash = HashFormatter.format(dense_hash)
 

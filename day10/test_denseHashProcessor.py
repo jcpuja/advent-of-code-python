@@ -16,3 +16,14 @@ class TestDenseHashProcessor(TestCase):
     def testInitialization_shouldComputeADenseHashOfLength16(self):
         dummy_sparse_hash = list(range(256))
         self.assertEqual(16, len(DenseHashProcessor(dummy_sparse_hash).get_hash()))
+
+    def testInitialization_shouldAggregateProcessedBlocks(self):
+        block = [65, 27, 9, 1, 4, 3, 40, 50, 91, 7, 6, 0, 2, 5, 68, 22]
+        sparse_hash = []
+        for i in range(16):
+            sparse_hash.extend(block)
+
+        self.assertEqual(256, len(sparse_hash))
+
+        expected_dense_hash = [64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64]
+        self.assertEqual(expected_dense_hash, DenseHashProcessor(sparse_hash).get_hash())
