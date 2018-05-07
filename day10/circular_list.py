@@ -6,6 +6,7 @@ class CircularList:
         return self.list
 
     def reverse(self, position, length):
+
         list_length = len(self.list)
 
         if not 0 <= position < list_length:
@@ -20,25 +21,14 @@ class CircularList:
             # short-circuit return
             return
 
-        end_index = position + length
-
-        if end_index <= list_length:
-            slice_to_reverse = self.list[position:end_index]
-            slice_to_reverse.reverse()
-            self.list[position:end_index] = slice_to_reverse
-
-        else:
-            actual_end_index = end_index % list_length
-
-            right_slice = self.list[position:]
-            left_slice = self.list[:actual_end_index]
-
-            slice_to_reverse = right_slice + left_slice
-            slice_to_reverse.reverse()
-
-            self.list[position:] = slice_to_reverse[:len(right_slice)]
-            self.list[:actual_end_index] = slice_to_reverse[-1 * len(left_slice):]
-            # times -1 means "len(left_slice) chars from the right of slice_to_reverse"
+        to_reverse = []
+        for x in range(length):
+            n = (position + x) % list_length
+            to_reverse.append(self.list[n])
+        to_reverse.reverse()
+        for x in range(length):
+            n = (position + x) % list_length
+            self.list[n] = to_reverse[x]
 
     def get_actual_position(self, position):
         if position < 0:

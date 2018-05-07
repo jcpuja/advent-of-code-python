@@ -1,7 +1,7 @@
 from day10.ascii_converter import AsciiConverter
+from day10.circular_list import CircularList
 from day10.dense_hash_processor import DenseHashProcessor
 from day10.hash_formatter import HashFormatter
-from day10.knot_hash_round import KnotHashRound
 
 
 class KnotHash:
@@ -10,17 +10,16 @@ class KnotHash:
 
         lengths = AsciiConverter.to_ascii_codes(message)
 
-        current_round = None
-        initial_position = 0
-        initial_skip_size = 0
-        for i in range(64):
-            current_round = KnotHashRound(lengths,
-                                          initial_position=initial_position,
-                                          initial_skip_size=initial_skip_size)
-            initial_position = current_round.get_current_position()
-            initial_skip_size = current_round.get_skip_size()
+        position = 0
+        skip_size = 0
+        nums = CircularList(256)
+        for _ in range(64):
+            for length in lengths:
+                nums.reverse(position, length)
+                position = nums.get_actual_position(position + length + skip_size)
+                skip_size += 1
 
-        sparse_hash = current_round.get_list()
+        sparse_hash = nums.get_list()
         dense_hash = DenseHashProcessor(sparse_hash).get_hash()
         self.string_hash = HashFormatter.format(dense_hash)
 
