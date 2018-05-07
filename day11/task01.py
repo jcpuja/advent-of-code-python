@@ -20,14 +20,12 @@ coord_deltas = {
 
 def compute_distance(input_string):
     position = 0, 0, 0
-    x0, y0, z0 = position
+    x, y, z = x0, y0, z0 = position
     moves = input_string.split(',')
     for move in moves:
-        x, y, z = position
-        move_x, move_y, move_z = coord_deltas[move]
-        position = [x + move_x, y + move_y, z + move_z]
+        delta_x, delta_y, delta_z = coord_deltas[move]
+        x, y, z = x + delta_x, y + delta_y, z + delta_z
 
-    x, y, z = position
     return max(abs(x - x0), abs(y - y0), abs(z - z0))
 
 

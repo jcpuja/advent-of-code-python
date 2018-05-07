@@ -24,8 +24,8 @@ def compute_max_distance(input_string):
     x, y, z = x0, y0, z0 = position
     moves = input_string.split(',')
     for move in moves:
-        move_x, move_y, move_z = coord_deltas[move]
-        x, y, z = x + move_x, y + move_y, z + move_z
+        delta_x, delta_y, delta_z = coord_deltas[move]
+        x, y, z = x + delta_x, y + delta_y, z + delta_z
         distance = max(abs(x - x0), abs(y - y0), abs(z - z0))
         max_distance = max(distance, max_distance)
 
