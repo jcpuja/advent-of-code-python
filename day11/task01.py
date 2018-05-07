@@ -19,8 +19,7 @@ coord_deltas = {
 
 
 def compute_distance(input_string):
-    position = 0, 0, 0
-    x, y, z = x0, y0, z0 = position
+    x, y, z = x0, y0, z0 = 0, 0, 0
     moves = input_string.split(',')
     for move in moves:
         delta_x, delta_y, delta_z = coord_deltas[move]
