@@ -1,5 +1,3 @@
-from functools import reduce
-
 from day10.knot_hash import KnotHash
 
 puzzle_input = 'amgozmfv'
@@ -15,6 +13,7 @@ hash_bits = list([
                      ])
                  ] for row in hash_rows)
 
-bit_sum = reduce((lambda x, y: x + y), [sum(row) for row in hash_bits])
+row_sums = [sum(row) for row in hash_bits]
+bit_sum = sum(row_sums)
 
 print(bit_sum)
