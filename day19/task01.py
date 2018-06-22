@@ -41,33 +41,32 @@ def safe_get(x, y):
     return c
 
 
-def travel(direction):
-    x, y = cursor
+def travel(direction, c):
+    x, y = c
     dx, dy = travel_deltas[direction]
     return x + dx, y + dy
 
 
-def process():
-    x, y = cursor
-    c = safe_get(x, y)
+def process(direction, cur):
+    x, y = cur
+    ch = safe_get(x, y)
 
-    new_direction = travel_direction
+    new_direction = direction
 
-    if c == PIPE or c == DASH:
+    if ch == PIPE or ch == DASH:
         pass
-    elif c == EMPTY:
+    elif ch == EMPTY:
         return True, None
-    elif c == PLUS:
+    elif ch == PLUS:
         # Direction change, detect new direction
-
-        to_check = [N, S] if travel_direction in (E, W) else [E, W]
+        to_check = [N, S] if direction in (E, W) else [E, W]
         for d in to_check:
-            test_x, test_y = travel(d)
+            test_x, test_y = travel(d, cur)
             if safe_get(test_x, test_y) != EMPTY:
                 new_direction = d
 
     else:
-        letters.append(c)
+        letters.append(ch)
 
     return False, new_direction
 
@@ -75,9 +74,9 @@ def process():
 # print(cursor)
 
 while True:
-    cursor = travel(travel_direction)
+    cursor = travel(travel_direction, cursor)
     # print(cursor)
-    done, travel_direction = process()
+    done, travel_direction = process(travel_direction, cursor)
     if done:
         break
 
