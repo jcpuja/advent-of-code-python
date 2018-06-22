@@ -1,4 +1,4 @@
-# After unsuccessful attempts, copied solution from
+# After unsuccessful attempts with multiprocessing, copied solution from
 # https://old.reddit.com/r/adventofcode/comments/7kj35s/2017_day_18_solutions/dretdd8/
 # N.B. No deadlock detection is performed, I was just lucky with my puzzle input.
 # Some solutions with deadlock detection can be found on that reddit thread
