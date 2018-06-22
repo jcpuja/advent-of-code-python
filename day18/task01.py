@@ -2,8 +2,8 @@ import re
 
 
 class Duet:
-    def __init__(self, instructions):
-        self.instructions = instructions
+    def __init__(self, _instructions):
+        self.instructions = _instructions
         self.registers = {}
         self.register_pattern = re.compile('[a-z]')
         self.last_played_sound = None
