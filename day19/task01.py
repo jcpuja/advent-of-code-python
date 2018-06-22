@@ -53,10 +53,14 @@ def process(direction, cur):
 
     new_direction = direction
 
-    if ch == PIPE or ch == DASH:
-        pass
-    elif ch == EMPTY:
+    if ch == EMPTY:
+        # We ran out of road, interpret this as "done"
         return True, None
+
+    elif ch == PIPE or ch == DASH:
+        # Simple road, nothing special to do
+        pass
+
     elif ch == PLUS:
         # Direction change, detect new direction
         to_check = [N, S] if direction in (E, W) else [E, W]
@@ -66,6 +70,7 @@ def process(direction, cur):
                 new_direction = d
 
     else:
+        # A letter, store it in our list
         letters.append(ch)
 
     return False, new_direction
