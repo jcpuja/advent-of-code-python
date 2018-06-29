@@ -6,10 +6,11 @@ with open('input.txt') as f:
 while True:
     min_distance = None
     closest = None
-    for i, particle in enumerate(particles):
+    for particle in particles:
         particle.tick()
-        if not min_distance or particle.distance_to_origin() < min_distance:
-            closest = i
-            min_distance = particle.distance_to_origin()
+        distance = particle.distance_to_origin()
+        if not min_distance or distance < min_distance:
+            closest = particle.idx
+            min_distance = distance
 
     print(closest)
