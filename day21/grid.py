@@ -12,6 +12,9 @@ class Grid:
         self.m = mat
         self.matching_patterns = set()
         for i in range(4):
+            # Axis 0 = horizontal axis
+            # Axis 1 = vertical axis
+            # rot90 with default paramters = CCW rotation
             self.matching_patterns.add(flatten(rot90(mat, i)))
             self.matching_patterns.add(flatten(flip(rot90(mat, i), 0)))
             self.matching_patterns.add(flatten(flip(rot90(mat, i), 1)))
@@ -38,7 +41,7 @@ class Grid:
         for i in range(0, size, step):
             out.append([])
             for j in range(0, size, step):
-                out[int(i / 2)].append(Grid(self.m[i:i + step, j:j + step].copy()))
+                out[-1].append(Grid(self.m[i:i + step, j:j + step].copy()))
 
         return out
 
@@ -47,6 +50,14 @@ class Grid:
 
     def concat(self, other_grid, axis):
         return Grid(concatenate((self.m.copy(), other_grid.m.copy()), axis))
+
+    def count_active(self):
+        cnt = 0
+        for c in self.m.flat:
+            if c == '#':
+                cnt += 1
+
+        return cnt
 
     def debug(self):
         print(self.m)

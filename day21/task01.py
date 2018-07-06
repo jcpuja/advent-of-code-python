@@ -3,6 +3,9 @@ from day21.grid import Grid
 rules = {}
 
 filename = 'example_input.txt'
+iterations = 2
+# filename = 'input.txt'
+# iterations = 5
 with open(filename) as f:
     for line in [l.rstrip() for l in f]:
         src, tgt = line.split(' => ')
@@ -10,7 +13,7 @@ with open(filename) as f:
 
 g = Grid.initial()
 
-for i in range(2):
+for i in range(iterations):
     sub_grids = g.split()  # 2-d array of grids
     new_grids = [[None] * len(sub_grids)] * len(sub_grids)  # Empty 2-d array of the same size
     for y, row in enumerate(sub_grids):
@@ -36,11 +39,4 @@ for i in range(2):
 
     g = merged_grid
 
-# print(m)
-print(g.m)
-# print(rot90(m, 0))
-
-
-# Axis 0 = horizontal axis
-# Axis 1 = vertical axis
-# rot90 with default paramters = CCW rotation
+print(g.count_active())
