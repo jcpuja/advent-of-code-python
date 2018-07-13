@@ -1,4 +1,4 @@
-def task01(file_name):
+def task02(file_name):
     states = {}
     up, right, down, left = 0, 1, 2, 3
     clean, weakened, infected, flagged = '.', 'W', '#', 'F'
@@ -54,4 +54,4 @@ def task01(file_name):
 
 
 # task01('example_input.txt')
-task01('input.txt')
+task02('input.txt')
