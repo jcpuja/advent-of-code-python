@@ -1,6 +1,9 @@
 import numpy as np
 
 
+# THIS IS NOT FINISHED OR EVEN WORKING PROPERLY
+
+
 def enhance(flat_in, rules):
     pass
 
