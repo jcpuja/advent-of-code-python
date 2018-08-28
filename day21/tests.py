@@ -2,7 +2,7 @@ import numpy as np
 import unittest
 from unittest import TestCase
 
-from day21.task01 import enhance, build_rules
+from day21.task02 import enhance, build_rules
 
 
 class GridUnitTests(TestCase):

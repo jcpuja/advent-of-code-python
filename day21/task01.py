@@ -1,47 +1,50 @@
+# https://www.reddit.com/r/adventofcode/comments/7l78eb/2017_day_21_solutions/drk4o3k
+
 import numpy as np
 
+with open("input.txt") as f:
+    LINES = [l.strip() for l in f]
 
-# THIS IS NOT FINISHED OR EVEN WORKING PROPERLY
+replacements = {}
 
+for l in LINES:
+    src, repl = l.split(' => ')
 
-def enhance(flat_in, rules):
-    pass
+    src = np.array([[c == '#' for c in b] for b in src.split('/')])
+    repl = np.array([[c == '#' for c in b] for b in repl.split('/')])
 
+    flip = np.fliplr(src)
 
-def combinations(in_arr):
-    combs = set()
-    for k in range(4):
-        combs.add(grid_as_string(np.rot90(in_arr, k)))
-        combs.add(grid_as_string(np.fliplr(np.rot90(in_arr, k))))
-        combs.add(grid_as_string(np.flipud(np.rot90(in_arr, k))))
+    for i in range(4):
+        replacements[src.tobytes()] = repl
+        replacements[flip.tobytes()] = repl
+        src, flip = np.rot90(src), np.rot90(flip)
 
-    return combs
+pat = np.array([
+    [False, True, False],
+    [False, False, True],
+    [True, True, True],
+])
 
+size = 3
 
-def grid_as_string(arr):
-    return ''.join([str(c) for c in arr.flatten()])
+# or 5 for part 1
+for k in range(5):
+    if size % 2 == 0:
+        newsize = size // 2 * 3
+        newpattern = np.empty((newsize, newsize), dtype=bool)
+        for i in range(0, size, 2):
+            for j in range(0, size, 2):
+                newpattern[i // 2 * 3:i // 2 * 3 + 3, j // 2 * 3:j // 2 * 3 + 3] = replacements[
+                    pat[i:i + 2, j:j + 2].tobytes()]
+    else:
+        newsize = size // 3 * 4
+        newpattern = np.empty((newsize, newsize), dtype=bool)
+        for i in range(0, size, 3):
+            for j in range(0, size, 3):
+                newpattern[i // 3 * 4:i // 3 * 4 + 4, j // 3 * 4:j // 3 * 4 + 4] = replacements[
+                    pat[i:i + 3, j:j + 3].tobytes()]
+    pat = newpattern
+    size = newsize
 
-
-def build_rules(example):
-    file_name = 'example_input.txt' if example else 'input.txt'
-    rules2 = {}
-    rules3 = {}
-    with open(file_name) as f:
-        for l in f:
-            src, tgt = l.strip().split(' => ')
-            src = src.replace('/', '')
-            tgt = tgt.replace('/', '')
-            src = np.array([1 if c == '#' else 0 for c in src])
-            tgt = np.array([1 if c == '#' else 0 for c in tgt])
-
-            if len(src) == 4:
-                for src_combination in combinations(src.reshape(2, 2)):
-                    rules2[src_combination] = tgt.reshape(3, 3)
-            elif len(src) == 9:
-                for src_combination in combinations(src.reshape(3, 3)):
-                    rules3[src_combination] = tgt.reshape(4, 4)
-
-            else:
-                assert False
-
-    return rules2, rules3
+print('result:', sum(sum(pat)))
