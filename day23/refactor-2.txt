@@ -1,0 +1,22 @@
+# Part 2 only => discard all code where a == 0
+#
+# See https://www.reddit.com/r/adventofcode/comments/7lms6p/2017_day_23_solutions/drnl3gg/
+
+b = 100 * 99 + 100000
+c = b + 17000
+
+while (true) {
+    f = false
+    d = 2
+    do {
+        e = 2
+        do {
+            if (d * e == b) {f = true}
+            e++
+        } while (e != b)
+        d++
+    } while (d != b)
+    if (f) {h++}
+    if (b == c) {return}
+    b += 17
+}

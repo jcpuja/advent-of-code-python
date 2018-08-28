@@ -1,0 +1,27 @@
+# Replacing assembly instructions with more readable assignment and goto operators
+# Compacting additions and multiplications
+# Replacing gotos with control flow
+#
+# See https://www.reddit.com/r/adventofcode/comments/7lms6p/2017_day_23_solutions/drnl3gg/
+
+b = 99
+c = b
+if (a != 0) {
+    b = 100 * b + 100000
+    c = b + 17000
+}
+while (true) {
+    f = 1
+    d = 2
+    do {
+        e = 2
+        do {
+            if (d * e == b) {f = 0}
+            e++
+        } while (e != b)
+        d++
+    } while (d != b)
+    if (f == 0) {h++}
+    if (b == c) {return}
+    b += 17
+}
